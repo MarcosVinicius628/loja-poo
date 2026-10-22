@@ -20,8 +20,6 @@ loja-poo/
 │   ├── Models/
 │   ├── Pagamentos/
 │   └── Services/
-└── tests/
-    └── testes.php
 ```
 
 ## Classes implementadas
@@ -66,7 +64,7 @@ No terminal, na pasta do projeto:
 php index.php
 ```
 
-O cenário de demonstração usa o cliente Carlos Silva, dois produtos, pagamento via PIX simulado e pedido nº 1001. A saída inclui:
+Ao abrir `index.php` no navegador ou executar `php index.php`, a página exibe o cenário de demonstração e os resultados dos seis testes. O pedido de demonstração usa o cliente Carlos Silva, dois produtos, pagamento via PIX simulado e pedido nº 1001. A saída do pedido inclui:
 
 ```text
 Frete: R$ 24,00
@@ -78,15 +76,7 @@ Pagamento PIX confirmado: R$ 923,90.
 
 O frete é R$ 12,00 por teclado (1,2 kg × R$ 10,00/kg), totalizando R$ 24,00 para duas unidades. Produtos digitais não entram no cálculo.
 
-## Testes obrigatórios
-
-Execute o verificador sem dependências externas:
-
-```bash
-php tests/testes.php
-```
-
-Ele cobre os seis cenários exigidos: estoque insuficiente, quantidade zero, preço negativo, pedido vazio, alteração de pedido cancelado (a mesma proteção vale para concluído) e tentativa de pagar pedido cancelado. Cada cenário exibe uma mensagem de sucesso com o erro esperado e sua mensagem; se um teste falhar, exibe a causa da falha. Ao final, mostra o total de testes aprovados. As mensagens aparecem em linhas separadas tanto no terminal quanto no navegador.
+Os testes no próprio `index.php` cobrem estoque insuficiente, quantidade zero, preço negativo, pedido vazio, alteração de pedido concluído e tentativa de pagar pedido cancelado. Cada cenário exibe uma mensagem de sucesso ou falha, e a página mostra o total de testes aprovados.
 
 ## Diagrama UML
 
