@@ -1,0 +1,117 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+abstract class Produto {
+  - codigo: int
+  - nome: string
+  - preco: float
+  - estoque: int
+  + getCodigo(): int
+  + getNome(): string
+  + getPreco(): float
+  + getEstoque(): int
+  + alterarPreco(preco: float): void
+  + adicionarEstoque(quantidade: int): void
+  + removerEstoque(quantidade: int): void
+  {abstract} + calcularPrecoFinal(): float
+}
+
+class ProdutoFisico {
+  - peso: float
+  - largura: float
+  - altura: float
+  - profundidade: float
+  + calcularFrete(): float
+  + calcularPrecoFinal(): float
+}
+
+class ProdutoDigital {
+  - tamanhoArquivo: float
+  - formato: string
+  - linkDownload: string
+  + calcularPrecoFinal(): float
+}
+
+class Cliente {
+  - codigo: int
+  - nome: string
+  - cpf: string
+  - email: string
+  - telefone: string
+  - enderecos: Endereco[]
+  + getCpf(): string
+  + alterarNome(nome: string): void
+  + alterarEmail(email: string): void
+  + alterarTelefone(telefone: string): void
+  + adicionarEndereco(endereco: Endereco): void
+}
+
+class Endereco {
+  - logradouro: string
+  - numero: string
+  - complemento: string
+  - bairro: string
+  - cidade: string
+  - estado: string
+  - cep: string
+}
+
+class ItemPedido {
+  - produto: Produto
+  - quantidade: int
+  - precoUnitario: float
+  - subtotal: float
+  + getSubtotal(): float
+}
+
+class Pedido {
+  - numero: int
+  - cliente: Cliente
+  - data: DateTimeImmutable
+  - itens: ItemPedido[]
+  - status: string
+  + adicionarItem(produto: Produto, quantidade: int): void
+  + removerItem(indice: int): void
+  + calcularValorTotal(): float
+  + calcularFrete(): float
+  + exibirDadosCompletos(pagamento: PagamentoInterface): string
+  + alterarStatus(status: string): void
+}
+
+interface PagamentoInterface {
+  + pagar(valor: float): void
+  + getNome(): string
+  + getConfirmacao(): string
+}
+
+class PagamentoPix {
+  + pagar(valor: float): void
+}
+class PagamentoCartao {
+  - parcelas: int
+  + pagar(valor: float): void
+}
+class PagamentoBoleto {
+  + pagar(valor: float): void
+}
+
+class PedidoService {
+  + validarPedido(pedido: Pedido): void
+  + verificarDisponibilidadeEstoque(pedido: Pedido): void
+  + processarPedido(pedido: Pedido, pagamento: PagamentoInterface): void
+  + atualizarEstoque(pedido: Pedido): void
+  + finalizarPedido(pedido: Pedido): void
+}
+
+Produto <|-- ProdutoFisico
+Produto <|-- ProdutoDigital
+Cliente "1" *-- "1..*" Endereco
+Pedido "1" *-- "0..*" ItemPedido
+ItemPedido "*" --> "1" Produto
+Pedido "*" --> "1" Cliente
+PagamentoInterface <|.. PagamentoPix
+PagamentoInterface <|.. PagamentoCartao
+PagamentoInterface <|.. PagamentoBoleto
+PedidoService ..> Pedido
+PedidoService ..> PagamentoInterface
+
